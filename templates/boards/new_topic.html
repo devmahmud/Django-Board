@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}New Topic | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb my-4">
+    <li class="breadcrumb-item"><a href="{% url 'BoardList' %}">Boards</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'TopicList' board.id %}">{{ board.name }}</a></li>
+    <li class="breadcrumb-item active">New topic</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Post</button>
+</form>
+<div class="mb-5"></div>
+{% endblock %}

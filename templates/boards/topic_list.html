@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ object.name|title }} Topics | {{ block.super }}{% endblock title %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb my-4">
+    <li class="breadcrumb-item"><a href="{% url 'BoardList' %}">Boards</a></li>
+    <li class="breadcrumb-item active">{{ board.name }}</li>
+</ol>
+{% endblock breadcrumb %}
+
+
+{% block content %}
+<div class="mb-4">
+    <a href="{% url 'NewTopic' board.pk %}" class="btn btn-primary">New topic</a>
+</div>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>Topic</th>
+            <th>Starter</th>
+            <th>Replies</th>
+            <th>Views</th>
+            <th>Last Update</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for topic in object_list %}
+        <tr>
+            <td><a href="{% url 'TopicPosts' pk=board.id topic_pk=topic.id %}">{{ topic.subject }}</a></td>
+            <td>{{ topic.starter.username }}</td>
+            <td>{{ topic.get_reply_count }}</td>
+            <td>{{ topic.views }}</td>
+            <td>{{ topic.last_updated }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% include 'pagination.html' %}
+{% endblock content %}

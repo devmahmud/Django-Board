@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Board List | {{ block.super }}{% endblock title %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb my-4">
+    <li class="breadcrumb-item active">Boards</li>
+</ol>
+
+{% endblock breadcrumb %}
+
+{% block content %}
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>Board</th>
+            <th>Posts</th>
+            <th>Topics</th>
+            <th>Last Post</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for board in object_list %}
+        <tr>
+            <td>
+                <a href="{% url 'TopicList' pk=board.id %}">{{ board.name }}</a>
+                <small class="text-muted d-block">{{ board.description }}</small>
+            </td>
+            <td class="align-middle">{{ board.get_posts_count }}</td>
+            <td class="align-middle">{{ board.get_topic_count }}</td>
+            <td>
+                {% with post=board.get_last_post %}
+                {% if post %}
+                <small>
+                    <a href="{% url 'TopicPosts' board.pk post.topic.pk %}">
+                        By {{ post.created_by.username }} at {{ post.created_at|timesince }} ago
+                    </a>
+                </small>
+                {% else %}
+                <small class="text-muted">
+                    <em>No posts yet.</em>
+                </small>
+                {% endif %}
+                {% endwith %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% include 'pagination.html' %}
+{% endblock content %}

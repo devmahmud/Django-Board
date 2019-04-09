@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Post a reply{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb my-4">
+    <li class="breadcrumb-item"><a href="{% url 'BoardList' %}">Boards</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'TopicList' post.topic.board.pk %}">{{ post.topic.board.name }}</a>
+    </li>
+    <li class="breadcrumb-item"><a
+            href="{% url 'TopicPosts' post.topic.board.pk post.topic.pk %}">{{ post.topic.subject }}</a></li>
+    <li class="breadcrumb-item active">Update</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+
+<form method="post" class="mb-4">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Save changes</button>
+    <a href="javascript:history.go(-1)" class="btn btn-outline-secondary" role="button">Cancel</a>
+</form>
+
+{% endblock %}
